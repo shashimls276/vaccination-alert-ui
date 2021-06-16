@@ -30,6 +30,6 @@ spec:
   selector:
     app: vaccination-alert-ui
   ports:
-    - port: 8081
+    - port: 80
       targetPort: 8082
   type: LoadBalancer
