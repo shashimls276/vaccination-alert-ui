@@ -1,0 +1,56 @@
+<div>
+
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" class="form-control" id="email"
+             placeholder="Email Address" formControlName="email" />
+    </div>
+
+    <div class="form-group">
+      <label for="state">State</label>
+      <select #item (change)="onChange(formGroup.value)" class="form-control" formControlName="state" id="state">
+        <option *ngFor="let item of stateList" [ngValue]="item.state_id"> {{item.state_name}} </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="district">District</label>
+      <select  class="form-control" formControlName="district" id="district">
+        <option *ngFor="let item of districtList" [ngValue]="item.district_id"> {{item.district_name}} </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="form-check-inline">
+        <label class="form-check-label">Age</label>
+      </div>
+      <div class="form-check-inline">
+        <label class="form-check-label">
+          <input type="checkbox" formControlName="under45" class="form-check-input" value="">Under 45
+        </label>
+      </div>
+      <div class="form-check-inline">
+        <label class="form-check-label">
+          <input type="checkbox" formControlName="above45" class="form-check-input" value="">Above 45
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-check-inline">
+        <label class="form-check-label">
+          <input type="checkbox" formControlName="dose1Subscription" class="form-check-input" value="">Dose 1
+        </label>
+      </div>
+      <div class="form-check-inline">
+        <label class="form-check-label">
+          <input type="checkbox" formControlName="dose2Subscription" class="form-check-input" value="">Dose 2
+        </label>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Subscribe</button>
+  </form>
+  <label>{{subscribeMessage}}</label>
+</div>

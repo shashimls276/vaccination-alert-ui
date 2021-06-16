@@ -1,0 +1,49 @@
+<div>
+<h3>Check your nearest vaccination center and slots availability</h3>
+
+  <form (ngSubmit)="onSearch()" #f="ngForm" class="form-inline">
+
+      <label for="pincode" class="mb-2 mr-sm-2">Pincode:</label>
+      <input type="text" class="form-control mb-2 mr-sm-2" id="pincode" ngModel name="pincode">
+      <button type="submit"  class="btn btn-primary mb-2">Search</button>
+
+  </form>
+</div>
+
+<div class="col-md-12" style="padding:10px" *ngIf="collectionSize">
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Vaccination Center</th>
+      <th>Date</th>
+      <th>Vaccine</th>
+      <th>Age</th>
+      <th>Dose1</th>
+      <th>Dose2</th>
+      <th>Available Dose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let slots of vaccineSlotsInfo |slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+      <td>{{slots.vaccinationCenter }} <br/>{{slots.pincode}}</td>
+      <td>{{slots.date}}</td>
+      <td>{{slots.vaccineName}}</td>
+      <td>{{slots.ageLimit}}</td>
+      <td>{{slots.availableFirstDoseVaccine }}</td>
+      <td>{{slots.availableSecondDoseVaccine }}</td>
+      <td>{{slots.availableCapacity }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [(page)]="page"
+                  [boundaryLinks]="true" aria-label="Default pagination"
+                  class="d-flex justify-content-end pagination-rounded-flat pagination-success">
+  </ngb-pagination>
+</div>
+<div *ngIf="!collectionSize">
+  <p>{{showSearchMessage}}</p>
+</div>
+
+
+
