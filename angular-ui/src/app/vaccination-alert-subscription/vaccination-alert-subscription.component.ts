@@ -11,7 +11,7 @@ import {StatusMessage} from "../model/StatusMessage";
   styleUrls: ['./vaccination-alert-subscription.component.css']
 })
 export class VaccinationAlertSubscriptionComponent implements OnInit {
-  hostName="http://localhost:8081";
+  hostName="http://35.200.224.18:80";
   stateList: State[] =[];
   districtList: District []=[];
   stateId:String="";

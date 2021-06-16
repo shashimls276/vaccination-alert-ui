@@ -12,7 +12,7 @@ export class VaccinationSearchComponent implements OnInit {
   // @ts-ignore
   @ViewChild('f', {static: false})searchForm: NgForm;
 
-  hostName="http://localhost:8081";
+  hostName="http://35.200.224.18:80/";
   vaccineSlotsInfo:VaccineSlotsInfo[]=[];
   page=1;
   collectionSize=0;
