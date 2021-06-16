@@ -2,7 +2,7 @@ pipeline {
     agent any
     
      environment { 
-        registry = "shashimls276/vaccination" 
+        registry = "shashimls276/vaccination-ui" 
         registryCredential = 'dockerhub_id' 
         dockerImage = ''
         PROJECT_ID = 'geometric-vim-314208'
@@ -45,6 +45,17 @@ pipeline {
                     //sh "docker image build -t demo ."
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
+            }
+        }
+        
+        stage('Image push to Hub') { 
+
+            steps { 
+                script { 
+                    docker.withRegistry( '', registryCredential ) { 
+                        dockerImage.push() 
+                    }
+                } 
             }
         }
         
