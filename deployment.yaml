@@ -15,7 +15,7 @@ spec:
     spec:
      containers:
      - name: vaccination-alert-ui
-       image: "shashimls276/vaccination-ui:10"
+       image: "shashimls276/vaccination-ui:11"
        ports:
        - containerPort: 8080        
 
