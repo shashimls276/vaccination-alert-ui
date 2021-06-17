@@ -24,10 +24,11 @@ public class ServiceDiscoveryController {
 		List<ServiceInstance> serviceInstances = this.discoveryClient.getInstances(applicationName);
 		ServiceDiscoveryVo serviceDiscoveryVo = new ServiceDiscoveryVo();
 		
+		System.out.println("List : "+serviceInstances);
 		for(ServiceInstance s : serviceInstances) {
 			System.out.println("Name :: "+s);
-			System.out.println(s.getUri());
-			serviceDiscoveryVo.setUrl(s.getUri().toString());
+			System.out.println(s.getInstanceId());
+			serviceDiscoveryVo.setUrl(s.getInstanceId());
 		}
 		return serviceDiscoveryVo;
 		
