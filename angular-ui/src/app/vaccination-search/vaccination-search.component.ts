@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {VaccineSlotsInfo} from "../model/VaccineSlotsInfo";
+import {AppSettings} from "../model/AppSettings";
 
 @Component({
   selector: 'app-vaccination-search',
@@ -12,7 +13,6 @@ export class VaccinationSearchComponent implements OnInit {
   // @ts-ignore
   @ViewChild('f', {static: false})searchForm: NgForm;
 
-  hostName="http://35.200.224.18:80/";
   vaccineSlotsInfo:VaccineSlotsInfo[]=[];
   page=1;
   collectionSize=0;
@@ -27,7 +27,7 @@ export class VaccinationSearchComponent implements OnInit {
 
   onSearch(){
     console.log(this.searchForm.form.value);
-    this.http.post(this.hostName+"/vaccinationInfo/search",this.searchForm.form.value).subscribe(responseData=>{
+    this.http.post(AppSettings.VACCINATION_API_ENDPOINT+"/vaccinationInfo/search",this.searchForm.form.value).subscribe(responseData=>{
       console.log(responseData);
       this.vaccineSlotsInfo=<VaccineSlotsInfo[]> responseData;
       console.log(this.vaccineSlotsInfo);
