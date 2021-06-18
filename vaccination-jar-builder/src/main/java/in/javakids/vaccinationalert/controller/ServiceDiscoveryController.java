@@ -56,6 +56,15 @@ public class ServiceDiscoveryController {
 				.getForEntity("http://vaccination/vaccinationInfo/states/", StateListInfo.class);
 
 		StateListInfo statesListInfo = stateListInfo.getBody();
+		
+		System.out.println("statesListInfo "+ statesListInfo);
+		
+		if(stateListInfo != null) {
+			System.out.println("statesListInfo "+ statesListInfo);
+			System.out.println("List Values:: "+stateListInfo.getBody());
+		}
+		
+		
 
 		return statesListInfo.getStates();
 	}
