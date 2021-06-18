@@ -21,6 +21,7 @@ public class ServiceDiscoveryController {
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
+	
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -45,12 +46,13 @@ public class ServiceDiscoveryController {
 
 	}
 
+	
 	@RequestMapping(value = "/states")
 	public List<State> getStateList() {
 		
 		System.out.println("Inside getStateList ......................");
 		
-		List<State> stateList = (List<State>) restTemplate.getForObject("http://vaccination/states/",State.class);
+		List<State> stateList = (List<State>) restTemplate.getForObject("http://vaccination/vaccinationInfo/states/",State.class);
 		
 		return stateList;
 	}
