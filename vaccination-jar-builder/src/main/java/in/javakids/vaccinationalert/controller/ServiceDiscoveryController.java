@@ -50,7 +50,7 @@ public class ServiceDiscoveryController {
 		
 		System.out.println("Inside getStateList ......................");
 		
-		List<State> stateList = (List<State>) restTemplate.getForObject("http://movie-info/movieInfo/",State.class);
+		List<State> stateList = (List<State>) restTemplate.getForObject("http://vaccination/states/",State.class);
 		
 		return stateList;
 	}
