@@ -1,6 +1,7 @@
 package in.javakids.vaccinationalert.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,21 +53,21 @@ public class ServiceDiscoveryController {
 
 		System.out.println("Inside getStateList ......................");
 
-		ResponseEntity<StateListInfo> stateListInfo = restTemplate
-				.getForEntity("http://vaccination/vaccinationInfo/states/", StateListInfo.class);
-
-		StateListInfo statesListInfo = stateListInfo.getBody();
+		ResponseEntity<State[]> stateListInfo = restTemplate
+				.getForEntity("http://vaccination/vaccinationInfo/states/", State[].class);
+		System.out.println("stateListInfo.getBody() : "+stateListInfo.getBody());
+		State[] states = stateListInfo.getBody();
 		
-		System.out.println("statesListInfo "+ statesListInfo);
+		System.out.println("statesListInfo "+ states);
 		
-		if(stateListInfo != null) {
-			System.out.println("statesListInfo "+ statesListInfo);
-			System.out.println("List Values:: "+stateListInfo.getBody());
+		if(states != null) {
+			System.out.println("statesListInfo "+ states);
 		}
+		List<State> list = new ArrayList<State>();
+		list.addAll(Arrays.asList(states));
 		
-		
-
-		return statesListInfo.getStates();
+		System.out.println("List : "+list);
+		return list;
 	}
 
 }
