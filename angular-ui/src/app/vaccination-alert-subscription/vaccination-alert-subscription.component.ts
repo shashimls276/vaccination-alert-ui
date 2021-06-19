@@ -31,18 +31,27 @@ export class VaccinationAlertSubscriptionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadServiceUrls();
+    this.loadStatesDetails();
   }
   onChange(formData:any) {
-    this.stateId = formData.state;
-    this.http.get(AppSettings.VACCINATION_API_ENDPOINT+`/vaccinationInfo/districts/${this.stateId}`).subscribe(responseData=>{
+
+    let params ={
+      "path":"vaccinationInfo/districts",
+      "object":{
+        "state_id":formData.state
+      }
+    };
+    this.http.post("/responseList",params).subscribe(responseData=>{
       this.districtList=<District[]>responseData;
     });
   }
 
   onSubmit(formData:FormData) {
-    console.log(formData);
-    this.http.post(AppSettings.VACCINATION_API_ENDPOINT+"/vaccinationInfo/subscribe",formData).subscribe(responseData=>{
+    let params ={
+      "path":"vaccinationInfo/subscribe",
+      "object":formData
+    };
+    this.http.post("/responseObject",params).subscribe(responseData=>{
       console.log(responseData);
       let statusMessage=<StatusMessage>responseData;
       this.subscribeMessage=statusMessage.statusMessage;
@@ -62,7 +71,10 @@ export class VaccinationAlertSubscriptionComponent implements OnInit {
   }
 
   loadStatesDetails(){
-    this.http.get(AppSettings.VACCINATION_API_ENDPOINT+"/vaccinationInfo/states").subscribe(responseData=>{
+    let params ={
+      "path":"vaccinationInfo/states"
+    };
+    this.http.post("/responseList",params).subscribe(responseData=>{
       this.stateList=<State[]>responseData;
     });
   }

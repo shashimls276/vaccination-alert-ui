@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {VaccineSlotsInfo} from "../model/VaccineSlotsInfo";
 import {AppSettings} from "../model/AppSettings";
+import {District} from "../model/District";
 
 @Component({
   selector: 'app-vaccination-search',
@@ -27,10 +28,14 @@ export class VaccinationSearchComponent implements OnInit {
 
   onSearch(){
     console.log(this.searchForm.form.value);
-    this.http.post(AppSettings.VACCINATION_API_ENDPOINT+"/vaccinationInfo/search",this.searchForm.form.value).subscribe(responseData=>{
-      console.log(responseData);
+
+    let params ={
+      "path":"/vaccinationInfo/search",
+      "object":this.searchForm.form.value
+    };
+
+    this.http.post("/responseList",params).subscribe(responseData=>{
       this.vaccineSlotsInfo=<VaccineSlotsInfo[]> responseData;
-      console.log(this.vaccineSlotsInfo);
       this.collectionSize=this.vaccineSlotsInfo.length;
       if(this.collectionSize > 0)
         this.showSearchMessage="";
