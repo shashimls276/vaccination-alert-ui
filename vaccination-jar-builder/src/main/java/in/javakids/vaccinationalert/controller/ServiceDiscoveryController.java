@@ -6,68 +6,56 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import in.javakids.vaccinationalert.model.ServiceDiscoveryVo;
-import in.javakids.vaccinationalert.model.State;
-import in.javakids.vaccinationalert.model.StateListInfo;
+import in.javakids.vaccinationalert.model.RequestParamsVo;
 
 @SpringBootApplication
 @RestController
 public class ServiceDiscoveryController {
 
 	@Autowired
-	private DiscoveryClient discoveryClient;
-
-	@Autowired
 	private RestTemplate restTemplate;
 
-	@RequestMapping("/service-instances/{applicationName}")
-	public ServiceDiscoveryVo serviceInstancesByApplicationName(@PathVariable String applicationName) {
-		List<ServiceInstance> serviceInstances = this.discoveryClient.getInstances(applicationName);
-		List<String> services = this.discoveryClient.getServices();
-		System.out.println("Services :: " + services);
-		ServiceDiscoveryVo serviceDiscoveryVo = new ServiceDiscoveryVo();
+	@RequestMapping(value = "/responseList", method = RequestMethod.POST)
+	public List<Object> getResponseAsObjectList(@RequestBody RequestParamsVo paramsVo) {
 
-		System.out.println("List : " + serviceInstances);
-		for (ServiceInstance s : serviceInstances) {
-			System.out.println("Name :: " + s);
-			System.out.println(s.getInstanceId());
-			serviceDiscoveryVo.setUrl(s.getInstanceId());
-			if (!s.getInstanceId().contains("http://")) {
-				serviceDiscoveryVo.setUrl("http://" + s.getInstanceId());
-			}
+		ResponseEntity<Object[]> responseObject = null;
+		List<Object> list = new ArrayList<Object>();
+		if (paramsVo.getObject() != null)
+
+		{
+			responseObject = restTemplate.postForEntity("http://vaccination/" + paramsVo.getPath(),
+					paramsVo.getObject(), Object[].class);
+		} else {
+			responseObject = restTemplate.getForEntity("http://vaccination/" + paramsVo.getPath(), Object[].class);
 		}
-		return serviceDiscoveryVo;
 
+		if (responseObject != null && null != responseObject.getBody()) {
+			Object[] states = responseObject.getBody();
+			list.addAll(Arrays.asList(states));
+		}
+
+		return list;
 	}
 
-	@RequestMapping(value = "/states")
-	public List<State> getStateList() {
-
-		System.out.println("Inside getStateList ......................");
-
-		ResponseEntity<State[]> stateListInfo = restTemplate
-				.getForEntity("http://vaccination/vaccinationInfo/states/", State[].class);
-		System.out.println("stateListInfo.getBody() : "+stateListInfo.getBody());
-		State[] states = stateListInfo.getBody();
-		
-		System.out.println("statesListInfo "+ states);
-		
-		if(states != null) {
-			System.out.println("statesListInfo "+ states);
+	@RequestMapping(value = "/responseObject", method = RequestMethod.POST)
+	public Object getResponseAsObject(@RequestBody RequestParamsVo paramsVo) {
+		System.out.println("paramsVo :: " + paramsVo.getObject());
+		Object responseObject = null;
+		if (paramsVo.getObject() != null) {
+			responseObject = restTemplate.postForEntity("http://vaccination/" + paramsVo.getPath(),
+					paramsVo.getObject(), Object.class);
+		} else {
+			responseObject = restTemplate.getForEntity("http://vaccination/" + paramsVo.getPath(), Object.class);
 		}
-		List<State> list = new ArrayList<State>();
-		list.addAll(Arrays.asList(states));
-		
-		System.out.println("List : "+list);
-		return list;
+
+		return responseObject;
 	}
 
 }
